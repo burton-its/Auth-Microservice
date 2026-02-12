@@ -13,6 +13,6 @@ python app.py
 ```
 
 ## Routes
-`get /login`: show login form
-`post /login`: authenticate user
-`'get /logout`: clear session
+- `POST /register`: show login form
+- `POST /login`: authenticate user
+
