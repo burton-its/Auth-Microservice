@@ -1,8 +1,9 @@
 # Auth-Microservice
 AUTH/LOGIN Microservice for CS361
-Contributors -  Corey Burton
-                Samuel Vernick
-                Sarah Van Hoose
+Contributors    
+- Corey Burton
+- Samuel Vernick
+- Sarah Van Hoose
 
 
 ## Running the App
