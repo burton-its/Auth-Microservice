@@ -1,19 +1,18 @@
-# Auth-Microservice
-AUTH/LOGIN Microservice for CS361
-Contributors    
+# Auth Microservice
+
+FastAPI authentication microservice for CS361.
+
+## Contributors
 - Corey Burton
 - Samuel Vernick
 - Sarah Van Hoose
 
 
-## Running the App
-From the project root:
+## API Endpoints
+- `GET /` health/welcome message
+- `POST /auth/register` create a user account
+- `POST /auth/login` verify credentials and return a token
 
-```
-python app.py
-```
 
-## Routes
-- `POST /register`: show login form
-- `POST /login`: authenticate user
+
 
