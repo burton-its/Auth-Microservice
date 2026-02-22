@@ -32,7 +32,7 @@ then run main.py by ->
 uvicorn app.main:app --reload --port 8000
 
 -swagger is under http://127.0.0.1:8000/docs
-
+```
 
 ## API Endpoints
 - `GET /` health/welcome message
