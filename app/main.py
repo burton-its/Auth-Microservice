@@ -13,7 +13,8 @@ def read_root():
     return {"message": "FastAPI user Auth/login Auth/Register!"}
 
 @app.post("/auth/register")
-def register(payload: RegisterIn, db: Session = Depends(get_db)):
+def register(payload:
+     RegisterIn, db: Session = Depends(get_db)):
     try:
         existing = db.query(User).filter(User.email == payload.email).first()
         if existing:

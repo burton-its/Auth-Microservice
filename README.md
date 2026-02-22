@@ -7,6 +7,31 @@ FastAPI authentication microservice for CS361.
 - Samuel Vernick
 - Sarah Van Hoose
 
+## requirements
+- Python3.11+
+- MySQL 8+
+- venv
+
+## project setup
+``` 
+create venv
+pip install -r requirements.txt
+
+
+in mysql (once running)
+- host: '127.0.0.1'
+- port: 3306
+- db: authdb
+- user: root
+- pw : none 
+mysql -u root < db.sql
+
+
+then run main.py by ->
+
+uvicorn app.main:app --reload --port 8000
+
+-swagger is under http://127.0.0.1:8000/docs
 
 
 ## API Endpoints
@@ -16,6 +41,6 @@ FastAPI authentication microservice for CS361.
 
 
 
-## System Architecture
+## UML diagram
 
 ![Auth Architecture Diagram](test.png)
