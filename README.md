@@ -8,6 +8,7 @@ FastAPI authentication microservice for CS361.
 - Sarah Van Hoose
 
 
+
 ## API Endpoints
 - `GET /` health/welcome message
 - `POST /auth/register` create a user account
@@ -15,4 +16,6 @@ FastAPI authentication microservice for CS361.
 
 
 
+## System Architecture
 
+![Auth Architecture Diagram](test.png)

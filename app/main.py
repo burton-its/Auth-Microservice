@@ -6,10 +6,6 @@ from app.models import User
 from app.schemas import RegisterIn, LoginIn, TokenOut
 from app.core.security import hash_password, verify_password, create_access_token
 
-
-# https://medium.com/@wangarraakoth/user-authentication-in-fastapi-using-python-3b51af11b38d
-# for reference
-
 app = FastAPI(title="Auth Service")
 
 @app.get("/")

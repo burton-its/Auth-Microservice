@@ -1,0 +1,32 @@
+@startuml
+title Auth Microservice Flow (Register -> Login -> Use JWT)
+
+actor Client as C
+participant "Auth Service\n(FastAPI)" as A
+database "MySQL\n(users table)" as DB
+participant "Other Services" as F
+
+
+
+== Register ==
+C -> A: POST /auth/register\nContent-Type: application/json\n{ email, password }
+A -> A: Validate payload\n(hash password)
+A -> DB: INSERT user(email, password_hash)
+DB --> A: OK (user_id created)
+A --> C: 201 Created\n{ id, email }
+
+== Login ==
+C -> A: POST /auth/login\nContent-Type: application/json\n{ email, password }
+A -> DB: SELECT id, password_hash\nWHERE email = ?
+DB --> A: user row (id, password_hash)
+A -> A: Verify password\n(create JWT: sub=user_id, exp, iat)
+A --> C: 200 OK\n{ access_token: "<JWT>", token_type: "Bearer"}
+
+note right of C
+JWT is a STRING.
+Client stores it locally.
+end note
+
+
+
+@enduml
