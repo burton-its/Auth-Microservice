@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
+import uuid
 
 from app.core.config import JWT_SECRET, JWT_ALG, ACCESS_TOKEN_EXPIRE_SECONDS
 
@@ -19,7 +20,9 @@ def create_access_token(user_id: int, email: str) -> str:
     payload = {
         "sub": str(user_id),      
         "email": email,
+        "jti": str(uuid.uuid4()),
         "iat": int(now.timestamp()),
+        
         "exp": int(exp.timestamp()),
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)

@@ -1,8 +1,9 @@
+# http client library
 import requests
 
 AUTH_URL = "http://127.0.0.1:8000"
-EMAIL = "test11@example.com"
-PASSWORD = "test11"
+EMAIL = "test13@example.com"
+PASSWORD = "test13"
 
 # register
 requests.post(f"{AUTH_URL}/auth/register", json={"email": EMAIL, "password": PASSWORD})
