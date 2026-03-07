@@ -23,18 +23,26 @@ loginForm.addEventListener('submit', async (event) => {
         email: userEmail.value,
         password: userPassword.value
     };
-    const response = await fetch('http://localhost:8000/auth/login',{
+    await fetch('http://localhost:8000/auth/login',{
         mode: 'cors',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(payload)
     })
-    const data = await response.json();
-    if (!data.access_token) {
+    const response = await fetch('http://localhost:4000/private/loggedin',{
+        mode: 'cors',
+        method: 'GET',
+        // headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+    });
+    console.log(response)
+    //window.location.href = response.url;
+    /*if (!data.access_token) {
         browserAlert(data.detail);
     } else {
         localStorage.setItem('token', data.access_token);
         browserAlert('Login verified with access token');
         window.location.replace('./loggedin.html');
-    }
+    }*/
 });
