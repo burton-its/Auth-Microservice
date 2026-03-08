@@ -1,66 +1,36 @@
-# Auth Microservice
+# Validator Microservice
 
-FastAPI authentication microservice for CS361.
+FastAPI JWT Token validation microservice for CS361.
 
 ## Contributors
-- Corey Burton
-- Samuel Vernick
 - Sarah Van Hoose
 
-## Communication Contract
-- Our main method of communication will be our Discord Server.
-- We are expected to respond within 48 hours.
-- In case of upcoming deadlines and a team member is not reachable through Discord for 48 hours, the remaining team members will attempt to contact the team member through Microsoft Teams or university email. If the team member is still not reachable within 24 hours, the remaining team members will convene to decide next steps.
-- Virtual meeting can be requested by any team member if they deem it necessary. Only one additional teammate needs to approve this meeting for it to procced.
-- Work on a microservice should be reasonably split.
+## Getting Started
+For the Testing program: You will need to download Node and run npm install to download the dependencies for this program.
 
-## requirements
-- Python3.11+
-- MySQL 8+
-- venv
+For the main program, validator.py, ensure the following libraries are installed:
 
-## project setup
-``` 
-create venv
-pip install -r requirements.txt
+fastapi 
+HTTPException
+jose
+CORSMiddleware
+datetime
+pydantic
+requests
+httpx
 
+To run the main program continuously, from the root directory, enter the following in your terminal: uvicorn app.validator:app --reload --port 9000
 
-in mysql (once running)
-- host: '127.0.0.1'
-- port: 3306
-- db: authdb
-- user: root
-- pw : none 
-mysql -u root < db.sql
+(I chose port 9000 but you can configure it as you'd like)
 
+Don't forget to add your local address to this code block if testing locally: origins = ['http://localhost:<PORT>']
 
-then run main.py by ->
-
-uvicorn app.main:app --reload --port 8000
-
--swagger is under http://127.0.0.1:8000/docs
-```
+This program needs to run in conjunction with AuthMicroservice - https://github.com/burton-its/Auth-Microservice - and Logout - https://github.com/burton-its/logout
 
 ## API Endpoints
-- `GET /` health/welcome message
-- `POST /auth/register` create a user account
-- `POST /auth/login` verify credentials and return a token
-
-
-## How to request data
-- user sends JSON request and receives JSON response
-- POST Request -> /auth/register
-- Response -> "user created" - 200
-
-## How to receive data
-- user logs in and receives a JWT
-- POST Request -> /auth/login
-- Response -> JWT - 200
-
- ## Example Call
- - microservice exposes a REST API over HTTP
- - User communicates using json request bodies and receives a JWT
-
-## UML diagram
-
-![Auth Architecture Diagram](test.png)
+- `GET /health` checks the health of the logout service endpoint
+- `POST /get-token` retrieves raw token from logout service (specifically for revoke/logout procedures)
+- `POST /validate/{jti}` retrieves from logout service whether token is active or has been revoked 
+- `POST /revoke` calls logout service to revoke token
+- `DELETE /cleanup` calls logout service to delete old tokens from blocklist
+- `POST /validate-token` decides whether token is valid based on expiration and referencing the blocklist and returns info about token validity
