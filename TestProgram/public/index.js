@@ -30,19 +30,22 @@ loginForm.addEventListener('submit', async (event) => {
         credentials: 'include',
         body: JSON.stringify(payload)
     })
-    const response = await fetch('http://localhost:4000/private/loggedin',{
+    await fetch('http://localhost:4000/private/loggedin',{
         mode: 'cors',
         method: 'GET',
-        // headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-    });
-    console.log(response)
-    //window.location.href = response.url;
-    /*if (!data.access_token) {
-        browserAlert(data.detail);
-    } else {
-        localStorage.setItem('token', data.access_token);
-        browserAlert('Login verified with access token');
-        window.location.replace('./loggedin.html');
-    }*/
-});
+    })
+    .then(async response => {
+        if (response.ok) {
+            window.location.href = 'http://localhost:4000/private/loggedin'; 
+        } else {
+            try {
+                const data = await response.json();
+                const message = data.detail || data.error || 'Unknown error';
+                alert(`Login failed. Try again: ${message}`);
+            } catch (e) {
+                alert('Login failed. Please try again.');
+            }
+            window.location.href = 'http://localhost:4000/';
+        }
+    })});

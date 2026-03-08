@@ -51,12 +51,16 @@ def login(payload: LoginIn, response: Response, db: Session = Depends(get_db)):
             raise HTTPException(status_code=401, detail="Invalid credentials")
 
         token = create_access_token(user_id=user.id, email=user.email)
+
         response.set_cookie(
             key="access_token",
             value=token,
             httponly=True,
             max_age=15 * 60
         )
+
+        response.status_code = status.HTTP_200_OK
+        return True
 
     except SQLAlchemyError:
         raise HTTPException(status_code=503, detail="Database unavailable")

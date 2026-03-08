@@ -16,13 +16,12 @@ def verify_password(password: str, password_hash: str) -> bool:
 def create_access_token(user_id: int, email: str) -> str:
     now = datetime.now(timezone.utc)
     exp = now + timedelta(seconds=ACCESS_TOKEN_EXPIRE_SECONDS)
-    # subject = user_id
+
     payload = {
         "sub": str(user_id),      
         "email": email,
         "jti": str(uuid.uuid4()),
         "iat": int(now.timestamp()),
-        
         "exp": int(exp.timestamp()),
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
