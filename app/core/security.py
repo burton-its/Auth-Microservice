@@ -22,7 +22,6 @@ def create_access_token(user_id: int, email: str) -> str:
         "email": email,
         "jti": str(uuid.uuid4()),
         "iat": int(now.timestamp()),
-        
         "exp": int(exp.timestamp()),
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
