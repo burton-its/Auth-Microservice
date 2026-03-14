@@ -6,7 +6,9 @@ class RegisterIn(BaseModel):
 
 class LoginIn(BaseModel):
     email: EmailStr
-    password: str
+    password: str | None = None
+    jti: str | None = None
+    refresh: bool
 
 class TokenOut(BaseModel):
     access_token: str

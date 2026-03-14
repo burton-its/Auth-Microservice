@@ -13,14 +13,16 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, password_hash: str) -> bool:
     return pwd_context.verify(password, password_hash)
 
-def create_access_token(user_id: int, email: str) -> str:
+def create_access_token(a_jti: str | None, user_id: int, email: str) -> str:
     now = datetime.now(timezone.utc)
     exp = now + timedelta(seconds=ACCESS_TOKEN_EXPIRE_SECONDS)
+
+    my_jti = a_jti or str(uuid.uuid4())
 
     payload = {
         "sub": str(user_id),      
         "email": email,
-        "jti": str(uuid.uuid4()),
+        "jti": my_jti,
         "iat": int(now.timestamp()),
         "exp": int(exp.timestamp()),
     }

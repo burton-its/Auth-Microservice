@@ -1,15 +1,16 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, Response, status
+from fastapi import FastAPI, Depends, Response, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from app.db import get_db
 from app.models import User
-from app.schemas import RegisterIn, LoginIn, TokenOut
+from app.schemas import RegisterIn, LoginIn
 from app.core.security import hash_password, verify_password, create_access_token
+
 
 app = FastAPI(title="Auth Service")
 
-origins = ['http://localhost:4000']
+origins = ['http://localhost:3000']
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,13 +20,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# GET checks health of auth microservice
 @app.get("/")
 def read_root():
     return {"message": "FastAPI user Auth/login Auth/Register!"}
 
+
+# POST adds newly registered user to DB
 @app.post("/auth/register")
 def register(payload:
-     RegisterIn, db: Session = Depends(get_db)):
+        RegisterIn, db: Session = Depends(get_db)):
     try:
         existing = db.query(User).filter(User.email == payload.email).first()
         if existing:
@@ -43,14 +48,22 @@ def register(payload:
         db.rollback()
         raise HTTPException(status_code=503, detail="Database unavailable")
 
+
+# POST checks that user is registered and returns a token nested in
+# http-only cookie for passing the token through requests from the browser
 @app.post("/auth/login")
 def login(payload: LoginIn, response: Response, db: Session = Depends(get_db)):
     try:
         user = db.query(User).filter(User.email == payload.email).first()
-        if not user or not verify_password(payload.password, user.password_hash):
-            raise HTTPException(status_code=401, detail="Invalid credentials")
+        # first time login logic
+        if payload.refresh is False:
+            if not user or not verify_password(payload.password, user.password_hash):
+                raise HTTPException(status_code=401, detail="Invalid credentials")
 
-        token = create_access_token(user_id=user.id, email=user.email)
+            token = create_access_token(None, user_id=user.id, email=user.email)
+        else:
+            # subsequent token refresh logic
+            token = create_access_token(payload.jti, user_id=user.id, email=user.email)
 
         response.set_cookie(
             key="access_token",
